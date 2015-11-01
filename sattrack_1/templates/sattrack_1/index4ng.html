@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="satelionApp">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>SATELION</title>
+
+  <!-- Bootstrap Core CSS -->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom CSS -->
+  <link href="/static/css/blog-post.css" rel="stylesheet">
+
+  <!-- jQuery UI CSS -->
+  <!--<link href="/static/css/jquery-ui.min.css" rel="stylesheet">
+
+  <!-- Angular -->
+
+
+  <!-- satelion js -->
+
+
+  <!-- map -->
+
+
+  <!-- requirement js -->
+
+  <script src='//maps.googleapis.com/maps/api/js?sensor=false'></script>
+  <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcmgx1ZJvhSFLX77P9uzdM_ebqcQ5epSQ"></script>-->
+
+  <!--<script src="https://code.angularjs.org/1.3.10/angular.js"></script>-->
+  <script src="/static/angular-1.4.7/angular.min.js"></script>
+
+
+
+<!--  <script src="/static/js/lodash.min.js"></script>
+  <script src="/static/angular-1.4.7/angular.min.js"></script>
+  <script src="/static/js/angular-simple-logger/dist/index.js"></script> -->
+
+  <script src="/static/js/ui-bootstrap-tpls-0.13.4.js"></script>
+
+
+  <!--<script src="/static/js/angular-google-maps.js"></script>-->
+
+  <script src="/static/js/satelion5ng.js"></script>
+
+
+
+  <script src="/static/js/satelion5service.js"></script>
+
+
+
+  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+  <![endif]-->
+
+</head>
+
+<body ng-controller="SatelionController">
+
+  <!-- Page Content -->
+  <div class="container">
+
+    <div class="page-header row">
+      <div class="col-xs-12 img-responsive">
+        <div>
+          <img id="satLogo" src="/static/images/satelion_logo_web.png">
+        </div>
+      </div>
+    </div>
+        <!-- /.row -->
+
+    <div class="row">
+
+      <!-- Blog Post Content Column -->
+      <div class="col-md-8">
+
+<!-- CUT #datetime -->
+
+        <!-- Preview Image -->
+        <div class="img-responsive" id="map-canvas"></div>
+
+        <hr>
+
+        {% verbatim %}
+        <!-- Post Content -->
+        <p class="lead"><div> {{satTle.satName}} </div></p>
+        <p><div> {{satTle.satLine1}} </div></p>
+        <p><div> {{satTle.satLine2}} </div></p>
+        {% endverbatim %}
+
+        <hr>
+
+
+
+<!-- CUT #comment -->
+
+
+      </div>
+
+      <!-- Blog Sidebar Widgets Column -->
+      <div class="col-md-4">
+
+        <!-- Blog Search Well -->
+        <div class="well">
+          <h4>Search Satellite</h4>
+          <form action="" method="get">
+          <div class="input-group">
+            <input type="text" name="sat" ng-model="selected" typeahead="satellite for satellite in satellites | filter:$viewValue | limitTo:8" placeholder="Search Satellite ..." class="form-control">
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+
+          </div>
+          </form>
+
+            <!-- /.input-group -->
+        </div>
+
+        <!-- Satellite Parameters Well -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Satellite Parameter</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <div class="row">
+                <div class="col-xs-6"><strong>SATELLITE</strong></div>
+                <div class="col-xs-6">{{ satellite_name }}</div>
+              </div>
+              {% verbatim %}
+              <div class="row">
+                <div class="col-xs-6"><strong>LATITUDE</strong></div>
+                <div class="col-xs-6">{{satParam.latitude}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>LONGITUDE</strong></div>
+                <div class="col-xs-6">{{satParam.longitude}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>ALTITUDE (km)</strong></div>
+                <div class="col-xs-6">{{satParam.altitudeKm}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>ALTITUDE (mi)</strong></div>
+                <div class="col-xs-6">{{satParam.altitudeMi}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>SPEED (km/s)</strong></div>
+                <div class="col-xs-6"><i>(need observer)</i></div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>SPEED (mi/s)</strong></div>
+                <div class="col-xs-6"><i>(need observer)</i></div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>RIGHT ASCENSION</strong></div>
+                <div class="col-xs-6">{{satParam.rightAsc}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>DECLINATION</strong></div>
+                <div class="col-xs-6">{{satParam.declination}}</div>
+              </div>
+              {% endverbatim %}
+              <!--<div class="row">
+                <div class="col-xs-6">
+                  <strong>SATELLITE PERIOD</strong>
+                </div>
+                <div class="col-xs-2">
+                  <strong>:</strong>
+                </div>
+                <div class="col-xs-4">
+                  <div id="satAltitude"></div>
+                </div>
+              </div>-->
+            </ul>
+          </div>
+        </div>
+
+        <!-- Antenna Parameters Well -->
+
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Antenna Parameter</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <i>RIGHT-click on the map to get antenna parameters on that location</i>
+              {% verbatim %}
+              <div class="row">
+                <div class="col-xs-6"><strong>LATITUDE</strong></div>
+                <div class="col-xs-6">{{antennaParam.latitude}}</div>
+              </div>
+
+              <div class="row">
+                <div class="col-xs-6"><strong>LONGITUDE</strong></div>
+                <div class="col-xs-6">{{antennaParam.longitude}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>AZIMUTH</strong></div>
+                <div class="col-xs-6">{{antennaParam.azimuth}}</div>
+              </div>
+              <div class="row">
+                <div class="col-xs-6"><strong>ELEVATION</strong></div>
+                <div class="col-xs-6">{{antennaParam.elevation}}</div>
+              </div>
+              {% endverbatim %}
+
+              <!--
+              <li><strong>azimuth</strong><div id="latitude"></div></li>
+              <li><strong>elevation</strong><div id="longitude"></div></li>
+              <li><strong>polarization</strong><div id="longitude"></div></li>
+              <li><strong>magnetic declination</strong><div id="longitude"></div></li>
+              <li><strong>hour angle</strong><div id="longitude"></div></li>
+              -->
+            </ul>
+          </div>
+        </div>
+
+          <!-- Time Well -->
+
+        <!--<div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Time</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <li><strong>UTC : </strong></li>
+              <li>date : April 10, 2015</li>
+              <li>time : 00:00:00</li>
+              <li>
+              </li>
+              <li><strong>Local Time : </strong></li>
+              <li>date : April 10,2015</li>
+              <li>time : 00:00:00</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Sun Outage Well -->
+
+        <!--<div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">Sun Outage Period</h3>
+          </div>
+          <div class="panel-body">
+            <ul class="list-unstyled">
+              <li><strong>date and time (1)</strong></li>
+              <li><strong>date and time (2)</strong></li>
+            </ul>
+          </div>
+        </div>-->
+
+      </div>
+
+    </div>
+    <!-- /.row -->
+
+    <hr>
+
+    <!-- Footer -->
+    <footer>
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Copyright &copy; Satelion 2015</p>
+        </div>
+      </div>
+        <!-- /.row -->
+    </footer>
+
+  </div>
+  <!-- /.container -->
+
+  <!-- javascript -->
+  <script>
+    var initSatName = '{{ satellite_name }}';
+  </script>
+
+  <!-- jQuery -->
+  <!--<script src="/static/js/jquery.js"></script>
+
+  <!-- Bootstrap Core JavaScript -->
+  <!--<script src="/static/js/bootstrap.min.js"></script>
+
+  <!-- jQuery-UI -->
+  <!--<script src="/static/js/jquery-ui.min.js"></script>
+
+  <!-- Google Map -->
+  <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcmgx1ZJvhSFLX77P9uzdM_ebqcQ5epSQ"></script>
+
+
+
+</body>
+
+</html>
